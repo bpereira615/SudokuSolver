@@ -1,5 +1,10 @@
 assignments = []
 
+
+
+rows = 'ABCDEFGHI'
+cols = '123456789'
+
 def assign_value(values, box, value):
     """
     Please use this function to update your values dictionary!
@@ -53,10 +58,10 @@ def grid_values(grid):
     dict = {}
     
     index = 0
-    for j in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']:
-        for i in range(1, 10):
+    for j in rows:
+        for i in cols:
         
-            curr = j+str(i)
+            curr = j+i
 
             if grid[index] == '.':
                 dict[curr] = '123456789'
@@ -105,11 +110,11 @@ def reduce_puzzle(values):
         reduced_values: the reduced sudoku in dictionary form
     """
     list = []    
-    for i in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']:
-        for j in range(1, 10):
+    for i in rows:
+        for j in cols:
             
             
-            idx = i + str(j)
+            idx = i + j
             if len(values[idx]) == 1:
                list.append(idx)
                       
@@ -118,7 +123,7 @@ def reduce_puzzle(values):
         
         num = values[curr]
         for p in peers[curr]:
-            values[p] = values[p].replace(num, "")
+            values[p] = values[p].replace(num, '')
                
                
     return reduced_values
@@ -137,8 +142,7 @@ def search(values):
 
 # useful representation of grid into units
 
-rows = 'ABCDEFGHI'
-cols = '123456789'
+
 
 boxes = cross(rows, cols)
 
