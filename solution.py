@@ -55,22 +55,22 @@ def grid_values(grid):
         - values: Value in corresponding box, e.g. '8', or '123456789' if it is empty.
     """
 
-    dict = {}
-    
-    index = 0
-    for j in rows:
-        for i in cols:
-        
-            curr = j+i
+    values = []
+    all_digits = '123456789'
+    for c in grid:
 
-            if grid[index] == '.':
-                dict[curr] = '123456789'
-            else:
-                dict[curr] = grid[index]
-            
-            index += 1
-            
-    return dict
+        #if value unkonwn, set as all possible digits
+        if c == '.':
+            values.append(all_digits)
+        elif c in all_digits:
+            values.append(c)
+
+    #check that valid input is given (9x9)
+    assert len(values) == 81
+
+    #create dictionary from pair box - value pairs
+    return dict(zip(boxes, values))
+
 
 
 def display(values):
@@ -95,7 +95,27 @@ def display(values):
 
 
 def only_choice(values):
-    pass
+    
+    """Sets given square to final choice if the only choice for given number among peers
+    
+    
+    Args:
+        values: sudoku grid as dictionary
+    Returns:
+        values: udated sudoku grid
+    """
+
+    #check all units (in order: rows, columns, squares)
+    for unit in unitlist:
+
+        #check each possible value
+        for digit in '123456789':
+            dplaces = [box for box in unit if digit in values[box]]
+
+            #check for single ocurrence, set if found
+            if len(dplaces) == 1:
+                values = assign_value(values, dplaces[0], digit)
+    return values
 
 
 
@@ -110,20 +130,18 @@ def reduce_puzzle(values):
         reduced_values: the reduced sudoku in dictionary form
     """
     list = []    
-    for i in rows:
-        for j in cols:
-            
-            
-            idx = i + j
-            if len(values[idx]) == 1:
-               list.append(idx)
+    for curr in boxes:
+        
+        if len(values[curr]) == 1:
+            list.append(curr)
                       
                 
     for curr in list:
         
         num = values[curr]
         for p in peers[curr]:
-            values[p] = values[p].replace(num, '')
+
+            reduced_values = assign_value(values, p, values[p].replace(num, ''))
                
                
     return reduced_values
