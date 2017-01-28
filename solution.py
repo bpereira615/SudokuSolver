@@ -33,7 +33,9 @@ def cross(A, B):
         letter s in string A with a letter t in string B
     """
     
-    return [s+t for s in a for t in b]
+    return [s+t for s in A for t in B]
+
+
 
 
 def grid_values(grid):
@@ -65,21 +67,95 @@ def grid_values(grid):
             
     return dict
 
+
 def display(values):
     "Display these values as a 2-D grid."
-    pass
+    
+    """
+    Display the values as a 2-D grid.
+    Args: 
+        values: the sudoku in dictionary form
+
+    """
+
+
+    width = 1+max(len(values[s]) for s in boxes)
+    line = '+'.join(['-'*(width*3)]*3)
+    for r in rows:
+        print(''.join(values[r+c].center(width)+('|' if c in '36' else '')
+                      for c in cols))
+        if r in 'CF': print(line)
+    return
+
+
 
 def only_choice(values):
     pass
 
+
+
+
 def reduce_puzzle(values):
-    pass
+    
+    """
+    Reduce the sudoku puzzle by removing the given number from peers.
+    Args: 
+        values: the current sudoku in dictionary form
+    Return:
+        reduced_values: the reduced sudoku in dictionary form
+    """
+    list = []    
+    for i in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']:
+        for j in range(1, 10):
+            
+            
+            idx = i + str(j)
+            if len(values[idx]) == 1:
+               list.append(idx)
+                      
+                
+    for curr in list:
+        
+        num = values[curr]
+        for p in peers[curr]:
+            values[p] = values[p].replace(num, "")
+               
+               
+    return reduced_values
+
 
 def solve(grid):
-    pass
+    return grid
 
 def search(values):
     pass
+
+
+
+
+
+
+# useful representation of grid into units
+
+rows = 'ABCDEFGHI'
+cols = '123456789'
+
+boxes = cross(rows, cols)
+
+row_units = [cross(r, cols) for r in rows]
+column_units = [cross(rows, c) for c in cols]
+square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
+unitlist = row_units + column_units + square_units
+units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
+peers = dict((s, set(sum(units[s],[]))-set([s])) for s in boxes)
+
+
+
+
+
+
+
+
 
 diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
 display(solve(grid_values(diag_sudoku_grid)))
