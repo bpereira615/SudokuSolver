@@ -6,7 +6,8 @@
 In this project, we have been creating an AI agent takes advantage of constraint propagation and search techniques to solve a sudoku puzzle. We have been writing code to implement two extensions of a generic sudoku solver. The first one will be to implement the technique called "naked twins". The second one will be to modify our existing code to solve a diagonal sudoku.
 
 ### Solution Visualization with Pygame
-![alt tag](https://raw.githubusercontent.com/bpereira615/SudokuSolver/tree/master/images/solve_viz.gif "Sudoku solve with PyGame visualization")
+![demo](images/solve_viz.gif)
+
 
 ### Code
 
