@@ -1,3 +1,6 @@
+import collections
+
+
 assignments = []
 
 
@@ -32,24 +35,27 @@ def naked_twins(values):
     #check all units (in order: rows, columns, squares)
     for unit in unitlist:
 
-        #check for twins
+        #check for potential twins
         doubles = [box for box in unit if len(values[box]) == 2]
         doubles_values = [values[curr] for curr in doubles]
 
-        import collections
-
+        #proceed if the there are twins, ie there is a repeat value for a pair
         if len(doubles_values) != len(set(doubles_values)):
             counts = collections.Counter(doubles_values)
 
-            pair_value = [val for val in counts if counts[val] == 2]
-            pair = [box for box in doubles if values[box] == pair_value[0]]
-
-            for curr in pair:
-                for peer in peers[curr]:
+            #assuming that there will be at most one naked pair
+            pair_value = [val for val in counts if counts[val] == 2][0]
+            pair = [box for box in doubles if values[box] == pair_value]
 
 
+            #remove pair from other boxes in given unit
+            for peer in unit:
+                
+                if peer not in pair and values[peer] is not pair_value:
+                    #try to remove each number value individually
                     values[peer] = values[peer].replace(pair_value[0],'')
-
+                    values[peer] = values[peer].replace(pair_value[1],'')
+                
 
 
     return values
