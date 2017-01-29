@@ -15,6 +15,7 @@ def assign_value(values, box, value):
         assignments.append(values.copy())
     return values
 
+
 def naked_twins(values):
     """Eliminate values using the naked twins strategy.
 
@@ -28,6 +29,7 @@ def naked_twins(values):
     # Find all instances of naked twins
     # Eliminate the naked twins as possibilities for their peers
 
+
 def cross(A, B):
     """Cross product of elements in A and elements in B.
         
@@ -39,7 +41,6 @@ def cross(A, B):
     """
     
     return [s+t for s in A for t in B]
-
 
 
 
@@ -94,6 +95,10 @@ def display(values):
 
 
 
+def eliminate(values):
+    pass
+
+
 def only_choice(values):
     
     """Sets given square to final choice if the only choice for given number among peers
@@ -108,7 +113,7 @@ def only_choice(values):
     #check all units (in order: rows, columns, squares)
     for unit in unitlist:
 
-        #check each possible value
+        #check each possible box value
         for digit in '123456789':
             dplaces = [box for box in unit if digit in values[box]]
 
@@ -147,21 +152,25 @@ def reduce_puzzle(values):
     return reduced_values
 
 
-def solve(grid):
-    return grid
 
 def search(values):
     pass
 
 
+def solve(grid):
+    """
+    Find the solution to a Sudoku grid.
+    Args:
+        grid(string): a string representing a sudoku grid.
+            Example: '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
+    Returns:
+        The dictionary representation of the final sudoku grid. False if no solution exists.
+    """
 
 
 
 
 # useful representation of grid into units
-
-
-
 boxes = cross(rows, cols)
 
 row_units = [cross(r, cols) for r in rows]
@@ -179,11 +188,17 @@ peers = dict((s, set(sum(units[s],[]))-set([s])) for s in boxes)
 
 
 
-diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
-display(solve(grid_values(diag_sudoku_grid)))
 
-try:
-    from visualize import visualize_assignments
-    visualize_assignments(assignments)
-except:
-    print('We could not visualize your board due to a pygame issue. Not a problem! It is not a requirement.')
+
+if __name__ == '__main__':
+    diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
+    display(solve(diag_sudoku_grid))
+
+    try:
+        from visualize import visualize_assignments
+        visualize_assignments(assignments)
+
+    except SystemExit:
+        pass
+    except:
+        print('We could not visualize your board due to a pygame issue. Not a problem! It is not a requirement.')
