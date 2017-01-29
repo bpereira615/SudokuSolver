@@ -29,6 +29,31 @@ def naked_twins(values):
     # Find all instances of naked twins
     # Eliminate the naked twins as possibilities for their peers
 
+    #check all units (in order: rows, columns, squares)
+    for unit in unitlist:
+
+        #check for twins
+        doubles = [box for box in unit if len(values[box]) == 2]
+        doubles_values = [values[curr] for curr in doubles]
+
+        import collections
+
+        if len(doubles_values) != len(set(doubles_values)):
+            counts = collections.Counter(doubles_values)
+
+            pair_value = [val for val in counts if counts[val] == 2]
+            pair = [box for box in doubles if values[box] == pair_value[0]]
+
+            for curr in pair:
+                for peer in peers[curr]:
+
+
+                    values[peer] = values[peer].replace(pair_value[0],'')
+
+
+
+    return values
+
 
 def cross(A, B):
     """Cross product of elements in A and elements in B.
