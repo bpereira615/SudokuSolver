@@ -4,7 +4,6 @@ import collections
 assignments = []
 
 
-
 rows = 'ABCDEFGHI'
 cols = '123456789'
 
@@ -230,7 +229,16 @@ boxes = cross(rows, cols)
 row_units = [cross(r, cols) for r in rows]
 column_units = [cross(rows, c) for c in cols]
 square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
-unitlist = row_units + column_units + square_units
+
+#for diagonal puzzle
+topL_botR = [rows[i] + cols[j] for i in range(0, 9) for j in range(0, 9) if i == j]
+topR_botL = [rows[i] + cols[j] for i in range(0, 9) for j in range(0, 9) if i + j == 8]
+
+diagonal_units = [topL_botR, topR_botL]
+
+#add diagonal units to list of total units
+unitlist = row_units + column_units + square_units + diagonal_units
+
 units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
 peers = dict((s, set(sum(units[s],[]))-set([s])) for s in boxes)
 
